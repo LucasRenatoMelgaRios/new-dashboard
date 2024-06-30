@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
-
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export const DataTable = ({ titulos, datos }) => {
     return (
@@ -12,6 +11,7 @@ export const DataTable = ({ titulos, datos }) => {
                             {titulos.map((titulo, index) => (
                                 <Th key={index}>{titulo}</Th>
                             ))}
+                            <Th>Acciones</Th>
                         </tr>
                     </thead>
                     <tbody>
@@ -19,21 +19,20 @@ export const DataTable = ({ titulos, datos }) => {
                             <tr key={indexFila}>
                                 {titulos.map((titulo, indexColumna) => (
                                     <Td key={indexColumna}>{fila[titulo]}</Td>
-
                                 ))}
-                                <HeaderContainer>
-
-                                    <ActionButton>
-                                        <FaEdit />
-                                    </ActionButton>
-                                    <ActionButton>
-                                        <FaTrash />
-                                    </ActionButton>
-                                </HeaderContainer>
+                                <Td>
+                                    <ActionContainer>
+                                        <ActionButton>
+                                            <FaEdit />
+                                        </ActionButton>
+                                        <ActionButton>
+                                            <FaTrash />
+                                        </ActionButton>
+                                    </ActionContainer>
+                                </Td>
                             </tr>
                         ))}
                     </tbody>
-
                 </Table>
             </TableContainer>
         </MainContainer>
@@ -54,7 +53,6 @@ const TableContainer = styled.div`
     padding: 20px;
     border-radius: 10px;
     background-color: #3ba5b3;
-
 `;
 
 const Table = styled.table`
@@ -75,12 +73,11 @@ const Td = styled.td`
     text-align: center;
 `;
 
-const HeaderContainer = styled.div`
+const ActionContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
 `;
 
 const ActionButton = styled.button`

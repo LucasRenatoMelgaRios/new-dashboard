@@ -1,48 +1,32 @@
+import { useEffect, useState } from "react";
 import { DataTable } from "../components/DataTable";
 import { Paginado } from "../components/Paginado";
 import { SideBar } from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
 import styled from "styled-components";
+import { ContextProductGet } from "../context/contextProduct/ContextProductGet";
 
 
 export const ProductosPage = () => {
+    const[productos, setProductos]=useState([]);
 
+    useEffect(()=>{
+        const getProducts=async()=>{
+            const data=await ContextProductGet();
+            setProductos(data);
+        };
+        getProducts();
+    },[]);
     const titulos = ["Nombre", "Descripcion", "Codigo de barra", "Precio", "Stock", "Proveedor"];
     
-    const datos = [
-        {
-            "Nombre": "Cereal",
-            "Descripcion": "prueba",
-            "Codigo de barra": "SDADADS34",
-            "Precio": "200",
-            "Stock": 400,
-            "Proveedor": "Santa Anita. INC"
-        },
-        {
-            "Nombre": "Estiercol",
-            "Descripcion": "prueba",
-            "Codigo de barra": "SDADADS34",
-            "Precio": "200",
-            "Stock": 400,
-            "Proveedor": "Santa Anita. INC"
-        },
-        {
-            "Nombre": "aea",
-            "Descripcion": "prueba",
-            "Codigo de barra": "SDADADS34",
-            "Precio": "200",
-            "Stock": 400,
-            "Proveedor": "Santa Anita. INC"
-        },
- 
-    ];
+    
 
     return (
         <>
             <SideBar/>
             <DataTable 
                 titulos={titulos}
-                datos={datos}
+                datos={productos}
             />
         <Paginado/>
         <AddButton>
