@@ -2,10 +2,14 @@ import React from 'react';
 import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-export const DataTable = ({ titulos, datos, onDelete }) => {
+export const DataTable = ({ titulos, datos, onDelete, onEdite }) => {
 
     const handleDeleteClick = (id) => {
         onDelete(id);
+    };
+
+    const handleEditClick = (id) => {
+        onEdite(id); // Llama a la función onEdite para abrir el modal de edición
     };
 
     return (
@@ -28,7 +32,7 @@ export const DataTable = ({ titulos, datos, onDelete }) => {
                                 ))}
                                 <Td>
                                     <ActionContainer>
-                                        <ActionButton>
+                                        <ActionButton onClick={() => handleEditClick(fila.id)}> {/* Cambia el evento onClick */}
                                             <FaEdit />
                                         </ActionButton>
                                         <ActionButton onClick={() => handleDeleteClick(fila.id)}>

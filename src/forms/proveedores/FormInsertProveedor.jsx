@@ -1,22 +1,21 @@
-// src/components/ProductForm.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { ContextProveedorInsert } from '../../context/contextProveedor/ContextProveedorInsert';
+
 export const FormInsertProveedor = ({ onClose, onProveedorAdded }) => {
-    const [newProv, setnewProv] = useState({
+    const [newProv, setNewProv] = useState({
         Nombre: '',
         Contacto: '',
         Telefono: '',
         Direccion: '',
     });
 
-    const handleInputChange = (e) => {
+    const handleInputChangeInsert = (e) => {
         const { name, value } = e.target;
-        setnewProv({ ...newProv, [name]: value });
+        setNewProv({ ...newProv, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmitInsert = async (e) => {
         e.preventDefault();
         try {
             const addedProveedor = await ContextProveedorInsert(newProv);
@@ -29,17 +28,14 @@ export const FormInsertProveedor = ({ onClose, onProveedorAdded }) => {
 
     return (
         <ModalOverlay>
-            
             <ModalContainer>
-                <h1>
-                    nuevo producto
-                </h1>
-                <FormContainer onSubmit={handleSubmit}>
-                    <Input type="text" name="Nombre" placeholder="Nombre" value={newProv.Nombre} onChange={handleInputChange} required />
-                    <Input type="text" name="Contacto" placeholder="Contacto" value={newProv.Contacto} onChange={handleInputChange} required />
-                    <Input type="text" name="Telefono" placeholder="Telefono" value={newProv.Telefono} onChange={handleInputChange} required />
-                    <Input type="text" name="Direccion" placeholder="Direccion" value={newProv.Direccion} onChange={handleInputChange} required />
-                    <Button type="submit">Agregar Producto</Button>
+                <h1>Nuevo Proveedor</h1>
+                <FormContainer onSubmit={handleSubmitInsert}>
+                    <Input type="text" name="Nombre" placeholder="Nombre" value={newProv.Nombre} onChange={handleInputChangeInsert} required />
+                    <Input type="text" name="Contacto" placeholder="Contacto" value={newProv.Contacto} onChange={handleInputChangeInsert} required />
+                    <Input type="text" name="Telefono" placeholder="Telefono" value={newProv.Telefono} onChange={handleInputChangeInsert} required />
+                    <Input type="text" name="Direccion" placeholder="Direccion" value={newProv.Direccion} onChange={handleInputChangeInsert} required />
+                    <Button type="submit">Agregar Proveedor</Button>
                     <Button type="button" onClick={onClose}>Cancelar</Button>
                 </FormContainer>
             </ModalContainer>
@@ -94,5 +90,3 @@ const Button = styled.button`
         background-color: #0a3c4b;
     }
 `;
-
-

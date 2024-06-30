@@ -1,45 +1,55 @@
-// src/components/ProductForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
-import { ContextProveedorInsert } from '../../context/contextProveedor/ContextProveedorInsert';
-export const FormInsertProveedor = ({ onClose, onProveedorAdded }) => {
-    const [newProv, setnewProv] = useState({
+import { ContextProveedortPut } from '../../context/contextProveedor/ContextProveedorPut';
+
+export const FormEditarProveedor = ({ onClose, onProveedorAdded, proveedorToEdit }) => {
+    const [newProv, setNewProv] = useState({
         Nombre: '',
         Contacto: '',
         Telefono: '',
         Direccion: '',
     });
 
-    const handleInputChange = (e) => {
+    useEffect(() => {
+        if (proveedorToEdit) {
+            setNewProv({
+                Nombre: proveedorToEdit.Nombre,
+                Contacto: proveedorToEdit.Contacto,
+                Telefono: proveedorToEdit.Telefono,
+                Direccion: proveedorToEdit.Direccion,
+            });
+        }
+    }, [proveedorToEdit]);
+
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setnewProv({ ...newProv, [name]: value });
+        setNewProv((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const addedProveedor = await ContextProveedorInsert(newProv);
-            onProveedorAdded(addedProveedor);
-            onClose();
+            const updatedProveedor = await ContextProveedortPut(proveedorToEdit.id, newProv);
+            onProveedorAdded(updatedProveedor); // Actualiza el proveedor en la lista de proveedores
+            onClose(); // Cierra el modal después de la actualización
         } catch (error) {
-            console.error('Error inserting data:', error);
+            console.error('Error updating data:', error);
         }
     };
 
     return (
         <ModalOverlay>
-            
             <ModalContainer>
-                <h1>
-                    nuevo producto
-                </h1>
+                <h1>Editar Proveedor</h1>
                 <FormContainer onSubmit={handleSubmit}>
-                    <Input type="text" name="Nombre" placeholder="Nombre" value={newProv.Nombre} onChange={handleInputChange} required />
-                    <Input type="text" name="Contacto" placeholder="Contacto" value={newProv.Contacto} onChange={handleInputChange} required />
-                    <Input type="text" name="Telefono" placeholder="Telefono" value={newProv.Telefono} onChange={handleInputChange} required />
-                    <Input type="text" name="Direccion" placeholder="Direccion" value={newProv.Direccion} onChange={handleInputChange} required />
-                    <Button type="submit">Agregar Producto</Button>
+                    <Input type="text" name="Nombre" placeholder="Nombre" value={newProv.Nombre} onChange={handleChange} required />
+                    <Input type="text" name="Contacto" placeholder="Contacto" value={newProv.Contacto} onChange={handleChange} required />
+                    <Input type="text" name="Telefono" placeholder="Telefono" value={newProv.Telefono} onChange={handleChange} required />
+                    <Input type="text" name="Direccion" placeholder="Direccion" value={newProv.Direccion} onChange={handleChange} required />
+                    <Button type="submit">Actualizar Proveedor</Button>
                     <Button type="button" onClick={onClose}>Cancelar</Button>
                 </FormContainer>
             </ModalContainer>
@@ -94,5 +104,3 @@ const Button = styled.button`
         background-color: #0a3c4b;
     }
 `;
-
-
