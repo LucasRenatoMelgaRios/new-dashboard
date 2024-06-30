@@ -5,10 +5,13 @@ import { SideBar } from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
 import styled from "styled-components";
 import { ContextProductGet } from "../context/contextProduct/ContextProductGet";
+import { FormInsertProducts } from "../forms/productos/FormInsertProducts";
 
 
 export const ProductosPage = () => {
     const[productos, setProductos]=useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     useEffect(()=>{
         const getProducts=async()=>{
@@ -17,6 +20,19 @@ export const ProductosPage = () => {
         };
         getProducts();
     },[]);
+
+    const handleProductAdded = (newProduct) => {
+        setProductos([...productos, newProduct]);
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const titulos = ["Nombre", "Descripcion", "Codigo de barra", "Precio", "Stock", "Proveedor"];
     
     
@@ -29,9 +45,12 @@ export const ProductosPage = () => {
                 datos={productos}
             />
         <Paginado/>
-        <AddButton>
+        <AddButton onClick={openModal}>
                     <FaPlus />
                 </AddButton>
+                {isModalOpen && (
+                <FormInsertProducts onClose={closeModal} onProductAdded={handleProductAdded} />
+            )}
         </>
     );
 };

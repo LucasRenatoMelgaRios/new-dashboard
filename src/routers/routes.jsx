@@ -9,7 +9,6 @@ import { LotesPage } from "../pages/LotesPage";
 import { BalancePage } from "../pages/BalancePage";
 import { UsuariosPage } from "../pages/UsuariosPage";
 
-
 export const MyRoutes = () =>{
 
     return(
