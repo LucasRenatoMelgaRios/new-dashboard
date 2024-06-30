@@ -1,7 +1,13 @@
+import React from 'react';
 import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-export const DataTable = ({ titulos, datos }) => {
+export const DataTable = ({ titulos, datos, onDelete }) => {
+
+    const handleDeleteClick = (id) => {
+        onDelete(id);
+    };
+
     return (
         <MainContainer>
             <TableContainer>
@@ -25,7 +31,7 @@ export const DataTable = ({ titulos, datos }) => {
                                         <ActionButton>
                                             <FaEdit />
                                         </ActionButton>
-                                        <ActionButton>
+                                        <ActionButton onClick={() => handleDeleteClick(fila.id)}>
                                             <FaTrash />
                                         </ActionButton>
                                     </ActionContainer>
