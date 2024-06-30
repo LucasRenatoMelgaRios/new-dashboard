@@ -42,7 +42,7 @@ export const PersonalPage = () => {
 
     return (
         <>
-            <SideBar/>
+            {/* <SideBar/> */}
             <DataTable 
                 titulos={titulos}
                 datos={datos}

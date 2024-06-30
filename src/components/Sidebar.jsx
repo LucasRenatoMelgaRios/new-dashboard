@@ -6,11 +6,18 @@ import { FaUser } from "react-icons/fa";
 import { FaCoins } from "react-icons/fa";
 import { VscSymbolField } from "react-icons/vsc";
 import { FaChartLine } from 'react-icons/fa';
+import { FaTimes } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 
 export const SideBar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen);
+    };
 
     const DataItems = [
         {
@@ -46,7 +53,7 @@ export const SideBar = () => {
         {
             id: 6,
             name: "Balance",
-            icon: <FaChartLine  />,
+            icon: <FaChartLine />,
             path: "/balance"
         },
         {
@@ -54,33 +61,63 @@ export const SideBar = () => {
             name: "Usuarios",
             icon: <FaUser />,
             path: "/usuarios"
-        }
+        },
     ];
 
     return (
-        <SideBarContainer>
-            {DataItems.map((item) => (
-                <NavItem key={item.id} href={item.path}>
-                    {item.icon}
-                    <span>{item.name}</span>
-                </NavItem>
-            ))}
-        </SideBarContainer>
+        <>
+         <ToggleButton isOpen={isOpen} onClick={toggleSidebar}>
+                {isOpen ? <FaTimes /> : <FaBars />}
+            </ToggleButton>
+            <SideBarContainer isOpen={isOpen}>
+                {DataItems.map((item) => (
+                    <NavItem key={item.id} href={item.path}>
+                        {item.icon}
+                        <span>{item.name}</span>
+                    </NavItem>
+                ))}
+            </SideBarContainer>
+        </>
     );
 };
 
+const ToggleButton = styled.button`
+    position: fixed;
+    top: 20px;
+    left: ${(props) => (props.isOpen ? '200px' : '20px')};
+    background-color: #0a3c4b;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: left 0.3s ease-in-out;
+
+    &:hover {
+        background-color: #135669;
+    }
+
+    svg {
+        font-size: 20px;
+    }
+`;
+
 const SideBarContainer = styled.div`
     position: fixed;
+    top: 0;
+    left: ${(props) => (props.isOpen ? '0' : '-250px')};
     display: flex;
-    height: 70vh;
-    min-width: 120px;
-    background-color: #0a3c4b;
     flex-direction: column;
     gap: 10px;
-    left: 0;
+    width: 150px;
+    height: 100vh;
+    background-color: #0a3c4b;
     color: #fff;
-    margin-top: 150px;
-    padding: 10px;
+    padding: 20px;
+    transition: left 0.3s ease-in-out;
+    z-index: 999;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
     border-radius: 0px 20px 20px 0px;
 `;
 
@@ -104,7 +141,5 @@ const NavItem = styled.a`
         font-size: 14px;
     }
 `;
-
-
 
 
