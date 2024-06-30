@@ -2,25 +2,32 @@ import styled from "styled-components"
 import { BiPaperclip } from "react-icons/bi";
 import { useState } from 'react';
 import FloatingLabelInput from "../../components/FloatingLabelInput";
+import useAuth from "../../hooks/UseAuth";
 
 
 export const LoginPage = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const {login}=useAuth();
 
-    return(
-        <>
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        login(username, password);
+    };
+
+    return (
         <MainContainer>
-
             <FormContainer>
                 <FirstHalf>
                     <HeaderFirstHalf>
-                        <BiPaperclip size={30}/>
+                        <BiPaperclip size={30} />
                         <p>Event Jungle</p>
                     </HeaderFirstHalf>
                     <FirstHalfContent>
-                    <Title>Hey There!</Title>
+                        <Title>Hey There!</Title>
                         <TextContainer>
-                        <p>Welcome Back.</p>
-                        <p>You are just one step away to your feed.</p>
+                            <p>Welcome Back.</p>
+                            <p>You are just one step away to your feed.</p>
                         </TextContainer>
                         <Question>Don't have an account yet?</Question>
                         <SimpleButton>Sign Up</SimpleButton>
@@ -28,28 +35,28 @@ export const LoginPage = () => {
                 </FirstHalf>
                 <SecondHalf>
                     <SmallerTitle>SIGN IN</SmallerTitle>
-                    <Form>
-                    <FloatingLabelInput 
-                            type="text" 
+                    <Form onSubmit={handleSubmit}>
+                        <FloatingLabelInput
+                            type="text"
                             label="Username"
-                            required 
+                            required
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
-                        <FloatingLabelInput 
-                            type="password" 
+                        <FloatingLabelInput
+                            type="password"
                             label="Password"
-                            required 
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
-                           
-                           <p style={{color:"#f88233", cursor:"pointer"}}>Forgot password?</p>
-                        <SimpleButton>Sign In</SimpleButton>
+                        <p style={{ color: "#f88233", cursor: "pointer" }}>Forgot password?</p>
+                        <SimpleButton type="submit">Sign In</SimpleButton>
                     </Form>
-  
                 </SecondHalf>
             </FormContainer>
-
         </MainContainer>
-        </>
-    )
+    );
 }
 
 const Form = styled.form`

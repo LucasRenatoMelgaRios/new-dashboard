@@ -1,3 +1,4 @@
+// src/components/FloatingLabelInput.jsx
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
@@ -16,7 +17,10 @@ const StyledInput = styled.input`
   background: none;
 
   &:focus {
-    outline: none;border-color: #30acac;border: 2px solid #30acac;color: #30acac;
+    outline: none;
+    border-color: #30acac;
+    border: 2px solid #30acac;
+    color: #30acac;
   }
 
   &:focus + label,
@@ -50,16 +54,19 @@ const StyledLabel = styled.label`
     `}
 `;
 
-const FloatingLabelInput = ({ label, ...props }) => {
-  const [hasContent, setHasContent] = useState(false);
+const FloatingLabelInput = ({ label, value, onChange, ...props }) => {
+  const [hasContent, setHasContent] = useState(value !== '');
 
   const handleChange = (e) => {
     setHasContent(e.target.value !== '');
+    if (onChange) {
+      onChange(e);
+    }
   };
 
   return (
     <InputContainer>
-      <StyledInput {...props} onChange={handleChange} placeholder=" " />
+      <StyledInput {...props} value={value} onChange={handleChange} placeholder=" " />
       <StyledLabel hasContent={hasContent}>{label}</StyledLabel>
     </InputContainer>
   );

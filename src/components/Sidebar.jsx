@@ -70,6 +70,7 @@ export const SideBar = () => {
                 {isOpen ? <FaTimes /> : <FaBars />}
             </ToggleButton>
             <SideBarContainer isOpen={isOpen}>
+            
                 {DataItems.map((item) => (
                     <NavItem key={item.id} href={item.path}>
                         {item.icon}
