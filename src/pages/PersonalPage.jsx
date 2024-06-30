@@ -3,6 +3,8 @@ import { Paginado } from "../components/Paginado";
 import { SideBar } from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
 import styled from "styled-components";
+import UserInfo from "../components/UserInfo";
+import LogoutButton from "../components/LogoutButton";
 
 
 export const PersonalPage = () => {
@@ -42,7 +44,9 @@ export const PersonalPage = () => {
 
     return (
         <>
+        
             <SideBar/>
+            
             <DataTable 
                 titulos={titulos}
                 datos={datos}
@@ -51,10 +55,33 @@ export const PersonalPage = () => {
             <AddButton>
                     <FaPlus />
                 </AddButton>
+                <Logout>
+                    <LogoutButton/>
+                </Logout>
+                
         </>
     );
 };
+const Logout = styled.button`
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    
 
+    svg {
+        font-size: 20px;
+    }
+`;
 const AddButton = styled.button`
     position: absolute;
     bottom: 20px;

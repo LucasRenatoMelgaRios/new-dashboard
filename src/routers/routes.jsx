@@ -8,23 +8,27 @@ import { VentasPage } from "../pages/VentasPage";
 import { LotesPage } from "../pages/LotesPage";
 import { BalancePage } from "../pages/BalancePage";
 import { UsuariosPage } from "../pages/UsuariosPage";
+import { AuthProvider } from "../context/AuthContext";
+import { PrivateRoute } from "../components/PrivateRoute";
 
 export const MyRoutes = () =>{
 
     return(
-        <>
-            <BrowserRouter>
+        
+        <BrowserRouter>
+        <AuthProvider>
             <Routes>
-                <Route path="/" element = {<LoginPage/>} />
-                <Route path="/personal" element = {<PersonalPage/>} />
-                <Route path="/productos" element = {<ProductosPage/>} />
-                <Route path="/proveedores" element = {<ProveedoresPage/>} />
-                <Route path="/ventas" element = {<VentasPage/>} />
-                <Route path="/lotes" element = {<LotesPage/>} />
-                <Route path="/balance" element = {<BalancePage/>} />
-                <Route path="/usuarios" element = {<UsuariosPage/>} />
+                <Route path="/" element={<LoginPage />} />
+                <Route path="/personal" element={<PrivateRoute><PersonalPage /></PrivateRoute>} />
+                <Route path="/productos" element={<PrivateRoute><ProductosPage /></PrivateRoute>} />
+                <Route path="/proveedores" element={<PrivateRoute><ProveedoresPage /></PrivateRoute>} />
+                <Route path="/ventas" element={<PrivateRoute><VentasPage /></PrivateRoute>} />
+                <Route path="/lotes" element={<PrivateRoute><LotesPage /></PrivateRoute>} />
+                <Route path="/balance" element={<PrivateRoute><BalancePage /></PrivateRoute>} />
+                <Route path="/usuarios" element={<PrivateRoute><UsuariosPage /></PrivateRoute>} />
             </Routes>
-            </BrowserRouter>
-        </>
+        </AuthProvider>
+    </BrowserRouter>
+            
     )
 }

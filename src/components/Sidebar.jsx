@@ -54,11 +54,13 @@ export const SideBar = () => {
             name: "Usuarios",
             icon: <FaUser />,
             path: "/usuarios"
-        }
+        },
+        
     ];
 
     return (
         <SideBarContainer>
+            
             {DataItems.map((item) => (
                 <NavItem key={item.id} href={item.path}>
                     {item.icon}
