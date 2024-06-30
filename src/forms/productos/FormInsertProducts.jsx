@@ -1,7 +1,6 @@
 // src/components/ProductForm.jsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { ContextProductInsert } from '../../context/contextProduct/ContextProductInsert';
 
 export const FormInsertProducts = ({ onClose, onProductAdded }) => {
