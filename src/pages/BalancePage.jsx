@@ -3,48 +3,78 @@ import { DataTable } from "../components/DataTable";
 import { SideBar } from "../components/Sidebar";
 import { Paginado } from "../components/Paginado";
 import { FaPlus } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { ContextEgresoGet } from "../context/contextBalance/ContextEgresoGet";
+import { ContextIngresoGet } from "../context/contextBalance/ContextIngresoGet";
+import { FormInsertEgreso } from "../forms/egreso/FormInsertEgreso";
+import { FormEditEgreso } from "../forms/egreso/FormEditEgreso";
 
 
 export const BalancePage = () => {
 
+    const [ingreso, setIngreso]=useState([]);
+    const [egreso,setEgreso]=useState([]);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para el modal de editar
+
+    const[egresoToEdit, setEgresoToEdit]=useState(null);
+
     const titulosIngresos = ["Venta", "Ganancia Total", "Fecha"];
     const titulosEgresos = ["Concepto", "Monto", "Fecha"];
 
-    const datosIngresos = [
-        {
-            "Venta": "Correa",
-            "Ganancia Total": "400",
-            "Fecha": "2024-02-22"
-        },
-        {
-            "Venta": "Jeringuilla",
-            "Ganancia Total": "200",
-            "Fecha": "2024-02-22"
-        },
-        {
-            "Venta": "Comida",
-            "Ganancia Total": "249",
-            "Fecha": "2024-02-22"
-        },
-    ];
+    useEffect(()=>{
+        const fetchIngreso=async()=>{
+            const data=await ContextIngresoGet();
+            setIngreso(data);
+        };
+        fetchIngreso();
+    },[]);
 
-    const datosEgresos = [
-        {
-            "Concepto": "Correa",
-            "Monto": "400",
-            "Fecha": "2024-02-22"
-        },
-        {
-            "Concepto": "Jeringuilla",
-            "Monto": "200",
-            "Fecha": "2024-02-22"
-        },
-        {
-            "Concepto": "Comida",
-            "Monto": "249",
-            "Fecha": "2024-02-22"
-        },
-    ];
+    useEffect(()=>{
+        const FetchEgreso=async()=>{
+            const data=await ContextEgresoGet();
+            setEgreso(data);
+        };
+        FetchEgreso();
+    },[]);
+
+    const handleEgresoAdded=(newEgreso)=>{
+        if(egresoToEdit){
+            const updatedEgreso=egreso.map(egres=> egres.id ===newEgreso.id ? newEgreso:egres);
+            setEgreso(updatedEgreso);
+        }else{
+            setEgreso([...egreso,newEgreso]);
+        }
+        setIsAddModalOpen(false);
+        setIsEditModalOpen(false);
+    };
+
+    /* const handleEgresoDeleted=async(id)=>{
+        try{
+            await
+        }
+    } */
+
+        const openAddModal=()=>{
+            setIsAddModalOpen(true);
+            setIsEditModalOpen(false);
+            setEgresoToEdit(null);
+        };
+
+        const openEditModal=(id)=>{
+            const egresos=egreso.find(egres=>egres.id===id);
+            if(egresos){
+                setEgresoToEdit(egresos);
+                setIsEditModalOpen(true);
+                setIsAddModalOpen(false);
+            }
+        };
+
+        const closeModals=()=>{
+            setIsAddModalOpen(false);
+            setIsEditModalOpen(false);
+            setEgresoToEdit(null);
+        }
 
     return (
         <>
@@ -52,16 +82,31 @@ export const BalancePage = () => {
             <TablesContainer>
                 <DataTable
                     titulos={titulosIngresos}
-                    datos={datosIngresos}
+                    datos={ingreso}
+                    onDelete={false}
+                    onEdite={false}
                 />
                 <DataTable
                     titulos={titulosEgresos}
-                    datos={datosEgresos}
+                    datos={egreso}
+                    onDelete={handleEgresoAdded}
+                    onEdite={openEditModal}
                 />
             </TablesContainer>
-            <AddButton>
+            <AddButton onClick={openAddModal}>
                     <FaPlus />
                 </AddButton>
+
+                {isAddModalOpen && (
+                <FormInsertEgreso onClose={closeModals} onEgresoAdded={handleProductAdded} />
+            )}
+            {isEditModalOpen && (
+                <FormEditEgreso
+                    onClose={closeModals}
+                    onEgresoAdded={handleEgresoAdded}
+                    egresoToEdit={egresoToEdit} // Pasa el proveedor a editar al formulario
+                />
+            )}
         </>
     );
 };
