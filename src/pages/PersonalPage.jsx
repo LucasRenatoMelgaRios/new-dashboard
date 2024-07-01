@@ -101,7 +101,7 @@ export const PersonalPage = () => {
                 <Logout>
                     <LogoutButton/>
                 </Logout>
-                
+                <UserInfo/>
         </>
     );
 };

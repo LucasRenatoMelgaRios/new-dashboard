@@ -6,13 +6,15 @@ import useAuth from "../../hooks/UseAuth";
 
 
 export const LoginPage = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const {login}=useAuth();
+    const [nombre_usuario, setNombreUsuario] = useState('');
+    const [contrasena, setContrasena] = useState('');
+    const { login } = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        login(username, password);
+        console.log('Attempting login with:', nombre_usuario, contrasena);  // Verificar datos del formulario
+
+        login(nombre_usuario, contrasena);
     };
 
     return (
@@ -36,19 +38,21 @@ export const LoginPage = () => {
                 <SecondHalf>
                     <SmallerTitle>SIGN IN</SmallerTitle>
                     <Form onSubmit={handleSubmit}>
-                        <FloatingLabelInput
+                    <FloatingLabelInput
                             type="text"
-                            label="Username"
+                            label="Nombre de Usuario"
+                            
                             required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={nombre_usuario}
+                            onChange={(e) => setNombreUsuario(e.target.value)}
                         />
                         <FloatingLabelInput
                             type="password"
-                            label="Password"
+                            label="Contraseña"
+                            
                             required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={contrasena}
+                            onChange={(e) => setContrasena(e.target.value)}
                         />
                         <p style={{ color: "#f88233", cursor: "pointer" }}>Forgot password?</p>
                         <SimpleButton type="submit">Sign In</SimpleButton>

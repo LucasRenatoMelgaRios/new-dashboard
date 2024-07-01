@@ -6,7 +6,7 @@ const UserInfo = () => {
 
     return (
         <div>
-            {user && <p>Bienvenido, {user.usuario}!</p>}
+            {user && <p>Bienvenido, {user.data.nombre_usuario}!</p>}
         </div>
     );
 };
