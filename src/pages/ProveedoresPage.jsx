@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { DataTable } from "../components/DataTable";
 import { Paginado } from "../components/Paginado";
 import { SideBar } from "../components/Sidebar";
+import { SearchBar } from "../components/Search";
 import { FaPlus } from "react-icons/fa";
-import styled from "styled-components";
 import { ContextProveedorDelete } from "../context/contextProveedor/ContextProveedorDelete";
 import { ContextProveedortGet } from "../context/contextProveedor/ContextProveedorGet";
 import { FormInsertProveedor } from "../forms/proveedores/FormInsertProveedor";
 import { FormEditarProveedor } from "../forms/proveedores/FormEditarProveedor";
+import { SuccessMessage } from "../components/SuccesMessage";
 
 export const ProveedoresPage = () => {
     const [proveedores, setProveedores] = useState([]);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Estado para el modal de agregar
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para el modal de editar
-    const [proveedorToEdit, setProveedorToEdit] = useState(null); // Estado para almacenar el proveedor a editar
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [proveedorToEdit, setProveedorToEdit] = useState(null);
+    const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+    const [searchField, setSearchField] = useState("Nombre"); // Estado para el campo de búsqueda
 
     useEffect(() => {
         const getProveedores = async () => {
@@ -24,18 +28,16 @@ export const ProveedoresPage = () => {
     }, []);
 
     const handleProveedorAdded = (newProv) => {
-        // Si estamos editando, actualizamos el proveedor en la lista
         if (proveedorToEdit) {
             const updatedProveedores = proveedores.map(prov =>
                 prov.id === newProv.id ? newProv : prov
             );
             setProveedores(updatedProveedores);
         } else {
-            // Si estamos agregando, agregamos el nuevo proveedor a la lista
             setProveedores([...proveedores, newProv]);
         }
-        setIsAddModalOpen(false); // Cierra el modal después de agregar
-        setIsEditModalOpen(false); // Cierra el modal de edición si estaba abierto
+        setIsAddModalOpen(false);
+        setIsEditModalOpen(false);
     };
 
     const handleProveedorDeleted = async (id) => {
@@ -49,35 +51,47 @@ export const ProveedoresPage = () => {
 
     const openAddModal = () => {
         setIsAddModalOpen(true);
-        setIsEditModalOpen(false); // Asegura que el modal de edición esté cerrado al abrir el de agregar
-        setProveedorToEdit(null); // Limpia el proveedor a editar al abrir el modal de agregar
+        setIsEditModalOpen(false);
+        setProveedorToEdit(null);
     };
 
     const openEditModal = (id) => {
         const proveedor = proveedores.find(prov => prov.id === id);
         if (proveedor) {
-            setProveedorToEdit(proveedor); // Establece el proveedor a editar
-            setIsEditModalOpen(true); // Abre el modal de edición
-            setIsAddModalOpen(false); // Asegura que el modal de agregar esté cerrado al abrir el de editar
+            setProveedorToEdit(proveedor);
+            setIsEditModalOpen(true);
+            setIsAddModalOpen(false);
         }
     };
 
     const closeModals = () => {
         setIsAddModalOpen(false);
         setIsEditModalOpen(false);
-        setProveedorToEdit(null); // Limpia el proveedor a editar después de cerrar los modales
+        setProveedorToEdit(null);
     };
 
     const titulos = ["Nombre", "Contacto", "Telefono", "Direccion"];
 
+    // Filtrar proveedores por el término de búsqueda y campo seleccionado
+    const filteredProveedores = proveedores.filter(proveedor =>
+        proveedor[searchField].toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <>
             <SideBar />
+            <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                searchField={searchField}
+                setSearchField={setSearchField}
+                fields={titulos}
+            />
             <DataTable
                 titulos={titulos}
-                datos={proveedores}
+                datos={filteredProveedores}
                 onDelete={handleProveedorDeleted}
-                onEdite={openEditModal} // Pasa la función de editar a DataTable
+                onEdite={openEditModal}
             />
             <Paginado />
             <AddButton onClick={openAddModal}>
@@ -89,11 +103,12 @@ export const ProveedoresPage = () => {
                     onProveedorAdded={handleProveedorAdded}
                 />
             )}
+            
             {isEditModalOpen && (
                 <FormEditarProveedor
                     onClose={closeModals}
                     onProveedorAdded={handleProveedorAdded}
-                    proveedorToEdit={proveedorToEdit} // Pasa el proveedor a editar al formulario
+                    proveedorToEdit={proveedorToEdit}
                 />
             )}
         </>

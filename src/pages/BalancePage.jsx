@@ -83,13 +83,11 @@ export const BalancePage = () => {
                 <DataTable
                     titulos={titulosIngresos}
                     datos={ingreso}
-                    onDelete={false}
-                    onEdite={false}
+                    showActions={false}
                 />
                 <DataTable
                     titulos={titulosEgresos}
                     datos={egreso}
-                    onDelete={handleEgresoAdded}
                     onEdite={openEditModal}
                 />
             </TablesContainer>
