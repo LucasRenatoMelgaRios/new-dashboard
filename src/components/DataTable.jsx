@@ -14,6 +14,7 @@ export const DataTable = ({ titulos, datos, onDelete, onEdite }) => {
 
     return (
         <MainContainer>
+            <ContentGen>
             <TableContainer>
                 <Table>
                     <thead>
@@ -45,6 +46,7 @@ export const DataTable = ({ titulos, datos, onDelete, onEdite }) => {
                     </tbody>
                 </Table>
             </TableContainer>
+            </ContentGen>
         </MainContainer>
     );
 };
@@ -56,9 +58,14 @@ const MainContainer = styled.div`
     justify-content: center;
     align-items: center;
 `;
+const ContentGen = styled.div`
+width: 60%;
+margin: 20;
+
+`;
 
 const TableContainer = styled.div`
-    width: 50%;
+    width: 100%;
     overflow-x: auto;
     padding: 20px;
     border-radius: 10px;
