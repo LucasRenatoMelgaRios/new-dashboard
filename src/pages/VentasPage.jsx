@@ -1,60 +1,116 @@
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { DataTable } from "../components/DataTable";
 import { Paginado } from "../components/Paginado";
 import { SideBar } from "../components/Sidebar";
+import { SearchBar } from "../components/Search";
 import { FaPlus } from "react-icons/fa";
-
-
+import { ContextVentaDelete } from "../context/contextVenta/ContextVentaDelete";
+import { ContextVentaGet } from "../context/contextVenta/ContextVentaGet";
+import { FormInsertVenta } from "../forms/ventas/FormInsertVenta";
+import { FormEditarVenta } from "../forms/ventas/FormEditVenta";
 export const VentasPage = () => {
+    const [ventas, setVentas] = useState([]);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [ventaToEdit, setVentaToEdit] = useState(null);
+    const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+    const [searchField, setSearchField] = useState("Producto"); // Estado para el campo de búsqueda
 
-    const titulos = ["Producto", "Cantidad", "Precio de venta", "Fecha de venta"];
+    const titulos = ["Producto", "Cantidad", "Preciodeventa", "Fechadeventa"];
 
-    const datos = [
-        {
-            "Producto": "Correa",
-            "Cantidad": "29",
-            "Precio de venta": "30",
-            "Fecha de venta": "2023-04-20",
-        },
-        {
-            "Producto": "Correa",
-            "Cantidad": "29",
-            "Precio de venta": "30",
-            "Fecha de venta": "2023-04-20",
-        },
-        {
-            "Producto": "Correa",
-            "Cantidad": "29",
-            "Precio de venta": "30",
-            "Fecha de venta": "2023-04-20",
-        },
-        {
-            "Producto": "Correa",
-            "Cantidad": "29",
-            "Precio de venta": "30",
-            "Fecha de venta": "2023-04-20",
-        },
-        {
-            "Producto": "Correa",
-            "Cantidad": "29",
-            "Precio de venta": "30",
-            "Fecha de venta": "2023-04-20",
-        },
+    useEffect(() => {
+        const fetchVentas = async () => {
+            const data = await ContextVentaGet();
+            setVentas(data);
+        };
 
+        fetchVentas();
+    }, []);
 
-    ];
+    const handleVentaAdded = (newVenta) => {
+        if (ventaToEdit) {
+            const updatedVentas = ventas.map(venta =>
+                venta.id === newVenta.id ? newVenta : venta
+            );
+            setVentas(updatedVentas);
+        } else {
+            setVentas([...ventas, newVenta]);
+        }
+        setIsAddModalOpen(false);
+        setIsEditModalOpen(false);
+    };
+
+    const handleVentaDeleted = async (id) => {
+        try {
+            await ContextVentaDelete(id);
+            setVentas(ventas.filter(venta => venta.id !== id));
+        } catch (error) {
+            console.error("Error deleting venta:", error);
+        }
+    };
+
+    const openAddModal = () => {
+        setIsAddModalOpen(true);
+        setIsEditModalOpen(false);
+        setVentaToEdit(null);
+    };
+
+    const openEditModal = (id) => {
+        const venta = ventas.find(venta => venta.id === id);
+        if (venta) {
+            setVentaToEdit(venta);
+            setIsEditModalOpen(true);
+            setIsAddModalOpen(false);
+        }
+    };
+
+    const closeModals = () => {
+        setIsAddModalOpen(false);
+        setIsEditModalOpen(false);
+        setVentaToEdit(null);
+    };
+
+    // Filtrar ventas por el término de búsqueda y campo seleccionado
+    const filteredVentas = ventas.filter(venta => {
+        const fieldValue = venta[searchField];
+        return fieldValue && fieldValue.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    
 
     return (
         <>
             <SideBar />
+            <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                searchField={searchField}
+                setSearchField={setSearchField}
+                fields={titulos}
+            />
             <DataTable
                 titulos={titulos}
-                datos={datos}
+                datos={filteredVentas}
+                onDelete={handleVentaDeleted}
+                onEdite={openEditModal}
             />
             <Paginado />
-            <AddButton>
-                    <FaPlus />
-                </AddButton>
+            <AddButton onClick={openAddModal}>
+                <FaPlus />
+            </AddButton>
+            {isAddModalOpen && (
+                <FormInsertVenta
+                    onClose={closeModals}
+                    onVentaAdded={handleVentaAdded}
+                />
+            )}
+            {isEditModalOpen && (
+                <FormEditarVenta
+                    onClose={closeModals}
+                    onVentaAdded={handleVentaAdded}
+                    ventaToEdit={ventaToEdit}
+                />
+            )}
         </>
     );
 };
