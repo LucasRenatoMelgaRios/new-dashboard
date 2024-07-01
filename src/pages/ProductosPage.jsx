@@ -6,12 +6,15 @@ import { FaPlus } from "react-icons/fa";
 import styled from "styled-components";
 import { ContextProductGet } from "../context/contextProduct/ContextProductGet";
 import { FormInsertProducts } from "../forms/productos/FormInsertProducts";
+import { ContextProductDelete } from "../context/contextProduct/ContextProductDelete";
+import { FormEditarProducts } from "../forms/productos/FormEditarProducts";
 
 
 export const ProductosPage = () => {
     const[productos, setProductos]=useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Estado para el modal de editar
+    const [productosToEdit, setProductosToEdit] = useState(null); // Estado para almacenar el proveedor a editar
 
     useEffect(()=>{
         const getProducts=async()=>{
@@ -22,16 +25,48 @@ export const ProductosPage = () => {
     },[]);
 
     const handleProductAdded = (newProduct) => {
-        setProductos([...productos, newProduct]);
+        // Si estamos editando, actualizamos el proveedor en la lista
+        if (productosToEdit) {
+            const updatedProductos = productos.map(prod =>
+                prod.id === newProduct.id ? newProduct : prod
+            );
+            setProductos(updatedProductos);
+        } else {
+            // Si estamos agregando, agregamos el nuevo proveedor a la lista
+            setProductos([...productos, newProduct]);
+        }
+        setIsAddModalOpen(false); // Cierra el modal después de agregar
+        setIsEditModalOpen(false); // Cierra el modal de edición si estaba abierto
     };
 
-    const openModal = () => {
-        setIsModalOpen(true);
+    const handleProductoDeleted = async (id) => {
+        try {
+            await ContextProductDelete(id);
+            setProductos(productos.filter(prod => prod.id !== id));
+        } catch (error) {
+            console.error("Error deleting proveedor:", error);
+        }
+    };
+    const openAddModal = () => {
+        setIsAddModalOpen(true);
+        setIsEditModalOpen(false); // Asegura que el modal de edición esté cerrado al abrir el de agregar
+        setProductosToEdit(null); // Limpia el proveedor a editar al abrir el modal de agregar
+    };
+    const openEditModal = (id) => {
+        const producto = productos.find(prod => prod.id === id);
+        if (producto) {
+            setProductosToEdit(producto); // Establece el proveedor a editar
+            setIsEditModalOpen(true); // Abre el modal de edición
+            setIsAddModalOpen(false); // Asegura que el modal de agregar esté cerrado al abrir el de editar
+        }
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeModals = () => {
+        setIsAddModalOpen(false);
+        setIsEditModalOpen(false);
+        setProductosToEdit(null); // Limpia el proveedor a editar después de cerrar los modales
     };
+
 
     const titulos = ["Nombre", "Descripcion", "Codigo de barra", "Precio", "Stock", "Proveedor"];
     
@@ -43,13 +78,22 @@ export const ProductosPage = () => {
             <DataTable 
                 titulos={titulos}
                 datos={productos}
+                onDelete={handleProductoDeleted}
+                onEdite={openEditModal}
             />
         <Paginado/>
-        <AddButton onClick={openModal}>
+        <AddButton onClick={openAddModal}>
                     <FaPlus />
                 </AddButton>
-                {isModalOpen && (
-                <FormInsertProducts onClose={closeModal} onProductAdded={handleProductAdded} />
+                {isAddModalOpen && (
+                <FormInsertProducts onClose={closeModals} onProductAdded={handleProductAdded} />
+            )}
+            {isEditModalOpen && (
+                <FormEditarProducts
+                    onClose={closeModals}
+                    onProductAdded={handleProductAdded}
+                    productosToEdit={productosToEdit} // Pasa el proveedor a editar al formulario
+                />
             )}
         </>
     );
