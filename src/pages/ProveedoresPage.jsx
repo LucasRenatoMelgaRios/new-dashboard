@@ -9,7 +9,6 @@ import { ContextProveedorDelete } from "../context/contextProveedor/ContextProve
 import { ContextProveedortGet } from "../context/contextProveedor/ContextProveedorGet";
 import { FormInsertProveedor } from "../forms/proveedores/FormInsertProveedor";
 import { FormEditarProveedor } from "../forms/proveedores/FormEditarProveedor";
-import { SuccessMessage } from "../components/SuccesMessage";
 
 export const ProveedoresPage = () => {
     const [proveedores, setProveedores] = useState([]);
@@ -103,7 +102,6 @@ export const ProveedoresPage = () => {
                     onProveedorAdded={handleProveedorAdded}
                 />
             )}
-            
             {isEditModalOpen && (
                 <FormEditarProveedor
                     onClose={closeModals}
