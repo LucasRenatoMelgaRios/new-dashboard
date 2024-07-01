@@ -53,10 +53,13 @@ export const BalancePage = () => {
                 <DataTable
                     titulos={titulosIngresos}
                     datos={datosIngresos}
+                    showActions={false}
+
                 />
                 <DataTable
                     titulos={titulosEgresos}
                     datos={datosEgresos}
+                    showActions={false}
                 />
             </TablesContainer>
             <AddButton>
