@@ -19,6 +19,7 @@ export const ProductosPage = () => {
     useEffect(()=>{
         const getProducts=async()=>{
             const data=await ContextProductGet();
+            console.log("uwu");
             setProductos(data);
         };
         getProducts();
@@ -68,7 +69,7 @@ export const ProductosPage = () => {
     };
 
 
-    const titulos = ["Nombre", "Descripcion", "Codigo de barra", "Precio", "Stock", "Proveedor"];
+    const titulos = ["nombre", "descripcion", "codigo_barra", "precio", "stock", "proveedor"];
     
     
 

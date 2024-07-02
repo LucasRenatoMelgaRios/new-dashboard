@@ -5,12 +5,12 @@ import { ContextProductInsert } from '../../context/contextProduct/ContextProduc
 
 export const FormInsertProducts = ({ onClose, onProductAdded }) => {
     const [newProduct, setNewProduct] = useState({
-        Nombre: '',
-        Descripcion: '',
-        CodigoDeBarra: '',
-        Precio: '',
-        Stock: '',
-        Proveedor: ''
+        nombre: '',
+        descripcion: '',
+        codigo_barra: '',
+        precio: '',
+        stock: '',
+        proveedor: ''
     });
 
     const handleInputChange = (e) => {
@@ -37,12 +37,12 @@ export const FormInsertProducts = ({ onClose, onProductAdded }) => {
                     nuevo producto
                 </h1>
                 <FormContainer onSubmit={handleSubmit}>
-                    <Input type="text" name="Nombre" placeholder="Nombre" value={newProduct.Nombre} onChange={handleInputChange} required />
-                    <Input type="text" name="Descripcion" placeholder="Descripcion" value={newProduct.Descripcion} onChange={handleInputChange} required />
-                    <Input type="text" name="CodigoDeBarra" placeholder="Codigo de barra" value={newProduct.CodigoDeBarra} onChange={handleInputChange} required />
-                    <Input type="number" name="Precio" placeholder="Precio" value={newProduct.Precio} onChange={handleInputChange} required />
-                    <Input type="number" name="Stock" placeholder="Stock" value={newProduct.Stock} onChange={handleInputChange} required />
-                    <Input type="text" name="Proveedor" placeholder="Proveedor" value={newProduct.Proveedor} onChange={handleInputChange} required />
+                    <Input type="text" name="nombre" placeholder="nombre" value={newProduct.nombre} onChange={handleInputChange} required />
+                    <Input type="text" name="descripcion" placeholder="descripcion" value={newProduct.descripcion} onChange={handleInputChange} required />
+                    <Input type="text" name="codigo_barra" placeholder="Codigo de barra" value={newProduct.codigo_barra} onChange={handleInputChange} required />
+                    <Input type="number" name="precio" placeholder="precio" value={newProduct.precio} onChange={handleInputChange} required />
+                    <Input type="number" name="stock" placeholder="stock" value={newProduct.stock} onChange={handleInputChange} required />
+                    <Input type="text" name="proveedor" placeholder="proveedor" value={newProduct.proveedor} onChange={handleInputChange} required />
                     <Button type="submit">Agregar Producto</Button>
                     <Button type="button" onClick={onClose}>Cancelar</Button>
                 </FormContainer>
