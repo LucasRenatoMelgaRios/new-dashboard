@@ -69,7 +69,7 @@ export const ProductosPage = () => {
     };
 
 
-    const titulos = ["nombre", "descripcion", "codigo_barra", "precio", "stock", "proveedor"];
+    const titulos = ["nombre", "descripcion", "codigo_barra", "precio", "stock", "proveedor_id"];
     
     
 

@@ -15,12 +15,12 @@ export const FormEditarProducts = ({ onClose, onProductosAdded, productosToEdit 
     useEffect(() => {
         if (productosToEdit) {
             setNewProduct({
-                Nombre: productosToEdit.Nombre,
-                Descripcion: productosToEdit.Descripcion,
-                CodigoBarra: productosToEdit.CodigoBarra,
-                Precio: productosToEdit.Precio,
-                Stock:productosToEdit.Stock,
-                Proveedor:productosToEdit.Proveedor,
+                nombre: productosToEdit.nombre,
+                descripcion: productosToEdit.descripcion,
+                codigo_barra: productosToEdit.codigo_barra,
+                precio: productosToEdit.precio,
+                stock:productosToEdit.stock,
+                proveedor:productosToEdit.proveedor,
             });
         }
     }, [productosToEdit]);
@@ -49,12 +49,12 @@ export const FormEditarProducts = ({ onClose, onProductosAdded, productosToEdit 
             <ModalContainer>
                 <h1>Editar Producto</h1>
                 <FormContainer onSubmit={handleSubmit}>
-                    <Input type="text" name="Nombre" placeholder="Nombre" value={newProduct.Nombre} onChange={handleChange} required />
-                    <Input type="text" name="Descripcion" placeholder="Descripcion" value={newProduct.Descripcion} onChange={handleChange} required />
-                    <Input type="text" name="CodigoBarra" placeholder="Codigo en Barra" value={newProduct.CodigoBarra} onChange={handleChange} required />
-                    <Input type="number" name="Precio" placeholder="Precio" value={newProduct.Precio} onChange={handleChange} required />
-                    <Input type="number" name="Stock" placeholder="Stock" value={newProduct.Stock} onChange={handleChange} required />
-                    <Input type="text" name="Proveedor" placeholder="Proveedor" value={newProduct.Proveedor} onChange={handleChange} required />
+                    <Input type="text" name="nombre" placeholder="Nombre" value={newProduct.nombre} onChange={handleChange} required />
+                    <Input type="text" name="descripcion" placeholder="descripcion" value={newProduct.descripcion} onChange={handleChange} required />
+                    <Input type="text" name="codigo_barra" placeholder="Codigo en Barra" value={newProduct.codigo_barra} onChange={handleChange} required />
+                    <Input type="number" name="precio" placeholder="Precio" value={newProduct.precio} onChange={handleChange} required />
+                    <Input type="number" name="stock" placeholder="Stock" value={newProduct.stock} onChange={handleChange} required />
+                    <Input type="text" name="proveedor" placeholder="Proveedor" value={newProduct.proveedor} onChange={handleChange} required />
                     <Button type="submit">Actualizar Producto</Button>
                     <Button type="button" onClick={onClose}>Cancelar</Button>
                 </FormContainer>

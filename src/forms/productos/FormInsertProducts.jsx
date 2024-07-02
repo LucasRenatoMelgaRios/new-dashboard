@@ -10,7 +10,7 @@ export const FormInsertProducts = ({ onClose, onProductAdded }) => {
         codigo_barra: '',
         precio: '',
         stock: '',
-        proveedor: ''
+        proveedor_id: '',
     });
 
     const handleInputChange = (e) => {
@@ -42,7 +42,7 @@ export const FormInsertProducts = ({ onClose, onProductAdded }) => {
                     <Input type="text" name="codigo_barra" placeholder="Codigo de barra" value={newProduct.codigo_barra} onChange={handleInputChange} required />
                     <Input type="number" name="precio" placeholder="precio" value={newProduct.precio} onChange={handleInputChange} required />
                     <Input type="number" name="stock" placeholder="stock" value={newProduct.stock} onChange={handleInputChange} required />
-                    <Input type="text" name="proveedor" placeholder="proveedor" value={newProduct.proveedor} onChange={handleInputChange} required />
+                    <Input type="text" name="proveedor_id" placeholder="proveedor" value={newProduct.proveedor_id} onChange={handleInputChange} required />
                     <Button type="submit">Agregar Producto</Button>
                     <Button type="button" onClick={onClose}>Cancelar</Button>
                 </FormContainer>
